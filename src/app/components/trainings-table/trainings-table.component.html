@@ -1,0 +1,52 @@
+<div class="mat-elevation-z8">
+	<table mat-table class="full-width-table" matSort aria-label="Elements">
+		<!-- Id Column -->
+		<ng-container matColumnDef="id">
+			<th mat-header-cell *matHeaderCellDef mat-sort-header>Id</th>
+			<td mat-cell *matCellDef="let row">{{row.id}}</td>
+		</ng-container>
+
+		<!-- exercice Column -->
+		<ng-container matColumnDef="exercice">
+			<th mat-header-cell *matHeaderCellDef mat-sort-header>Exercice</th>
+			<td mat-cell *matCellDef="let row">{{row.exercice}}</td>
+		</ng-container>
+
+		<!-- weight Column -->
+		<ng-container matColumnDef="weight">
+			<th mat-header-cell *matHeaderCellDef mat-sort-header>Weight</th>
+			<td mat-cell *matCellDef="let row">{{row.weight}}</td>
+		</ng-container>
+
+		<!-- nbSeries Column -->
+		<ng-container matColumnDef="nbSeries">
+			<th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre de séries</th>
+			<td mat-cell *matCellDef="let row">{{row.nbSeries}}</td>
+		</ng-container>
+
+		<!-- nbSeries Column -->
+		<ng-container matColumnDef="actions">
+			<th mat-header-cell *matHeaderCellDef mat-sort-header>Actions</th>
+			<td mat-cell *matCellDef="let row">
+				<button mat-mini-fab (click)="onClickEdit(row.id)">
+					<mat-icon>edit</mat-icon>
+				</button>
+				<button mat-mini-fab color="primary" (click)="onClickDelete(row.id)">
+					<mat-icon>delete</mat-icon>
+				</button>
+				{{row.id}}
+			</td>
+		</ng-container>
+
+		<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+		<tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+	</table>
+
+	<mat-paginator #paginator
+			[length]="dataSource?.data?.length"
+			[pageIndex]="0"
+			[pageSize]="10"
+			[pageSizeOptions]="[5, 10, 20]"
+			aria-label="Select page">
+	</mat-paginator>
+</div>
