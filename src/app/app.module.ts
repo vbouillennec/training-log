@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { TrainingsComponent } from './components/trainings/trainings.component';
@@ -14,10 +15,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
-import { MatProgressSpinner, MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { environment } from '../environments/environment';
 
 @NgModule({
@@ -27,8 +29,14 @@ import { environment } from '../environments/environment';
     TrainingsTableComponent
   ],
   imports: [
+	MatProgressSpinnerModule,
+	AngularFireModule.initializeApp(environment.firebase),
+	AngularFirestoreModule,
+	AngularFireDatabaseModule,
+
     BrowserModule,
     BrowserAnimationsModule,
+	FormsModule,
 	MatButtonModule,
 	MatTableModule,
 	MatPaginatorModule,
@@ -38,12 +46,9 @@ import { environment } from '../environments/environment';
 	MatSidenavModule,
 	MatDividerModule,
 	MatIconModule,
-	MatProgressSpinnerModule,
-	AngularFireModule.initializeApp(environment.firebase),
-	AngularFirestoreModule,
   ],
   providers: [
-	{provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'outline'}}
+	{provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'outline'}},
   ],
   bootstrap: [AppComponent]
 })

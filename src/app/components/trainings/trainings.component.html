@@ -1,34 +1,42 @@
 <div class="container">
-	<p>trainings works!</p>
-			<mat-form-field>
-				<mat-label>Exercice</mat-label>
-				<input matInput type="text" placeholder="Ex. Squat">
-			</mat-form-field>
+	<form (ngSubmit)="onSubmit()">
+		<mat-form-field>
+			<mat-label>Exercice</mat-label>
+			<input matInput type="text" placeholder="Ex. Squat" [(ngModel)]="newExercice.name" name="name">
+		</mat-form-field>
+	
+		<mat-form-field>
+			<mat-label>Poids</mat-label>
+			<input matInput type="number" 
+			placeholder="Ex. 60"
+			[(ngModel)]="newExercice.weight" 
+			name="weight">
+		</mat-form-field>
+	
+		<mat-form-field>
+			<mat-label>Nombre de séries</mat-label>
+			<input matInput type="number" placeholder="Ex. 4"
+			[(ngModel)]="newExercice.nbSeries" 
+			name="nbSeries">
+		</mat-form-field>
+	
+		<button *ngIf="!inEditMode;else editButtons" mat-fab color="primary" aria-label="Ajouter l'exercice" type="submit">
+			<mat-icon>add</mat-icon>
+		</button>
 
-			<mat-form-field>
-				<mat-label>Poids</mat-label>
-				<input matInput type="number" placeholder="Ex. 60">
-			</mat-form-field>
-
-			<mat-form-field>
-				<mat-label>Nombre de séries</mat-label>
-				<input matInput type="number" placeholder="Ex. 4">
-			</mat-form-field>
-
-			<button mat-fab color="primary" aria-label="Ajouter l'exercice" (click)="onClick()">
-				<mat-icon>add</mat-icon>
+		<ng-template #editButtons>
+			<button mat-fab color="primary" aria-label="Ajouter l'exercice" (click)="onSave()">
+				<mat-icon>save</mat-icon>
 			</button>
+			<button mat-fab color="" aria-label="Ajouter l'exercice" (click)="onCancel()" type="reset">
+				<mat-icon>close</mat-icon>
+			</button>
+		</ng-template>
 
-			<mat-divider></mat-divider>
+	</form>
+	
 
-			<div *ngIf="!isLoading; else loading">
-				<p *ngFor="let exercice of fakeExercices">{{exercice.name}}</p>
-			</div>
-
-			<ng-template #loading>
-				<mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
-			</ng-template>
-
-	<app-trainings-table></app-trainings-table>
-
+	<mat-divider></mat-divider>
+	<app-trainings-table (editExerciceEvent)="editExercice($event)">
+	</app-trainings-table>
 </div>

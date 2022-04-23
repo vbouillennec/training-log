@@ -1,6 +1,6 @@
-export interface Exercices {
+export interface Exercice {
 	name: string;
-	id?: number;
+	id?: string;
 	weight: number;
 	nbSeries: number;
 }
