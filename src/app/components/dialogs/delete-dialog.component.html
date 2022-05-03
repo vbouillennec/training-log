@@ -1,0 +1,17 @@
+<div class="container">
+	<h1 mat-dialog-title>Supprimer l'entrainement</h1>
+	<div mat-dialog-content>
+	<p>Es-tu sur de vouloir supprimer cet entrainement ?</p>
+	<!-- <mat-form-field appearance="fill">
+		<mat-label>Favorite Animal</mat-label>
+		<input matInput [(ngModel)]="response">
+	</mat-form-field> -->
+	</div>
+	<div mat-dialog-actions>
+		<button mat-button (click)="onNoClick()">Non</button>
+		<button mat-button 
+		[mat-dialog-close]="data.response"
+		cdkFocusInitial>Oui</button>
+	</div>
+</div>
+

@@ -16,17 +16,24 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { environment } from '../environments/environment';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { DeleteDialogComponent } from './components/dialogs/delete-dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TrainingsComponent,
-    TrainingsTableComponent
+    TrainingsTableComponent,
+	DeleteDialogComponent,
   ],
   imports: [
 	MatProgressSpinnerModule,
@@ -45,10 +52,16 @@ import { environment } from '../environments/environment';
 	MatInputModule,
 	MatSidenavModule,
 	MatDividerModule,
+	MatSelectModule,
+	MatDialogModule,
 	MatIconModule,
+	MatDatepickerModule,
+	MatMomentDateModule,
   ],
   providers: [
 	{provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'outline'}},
+	{provide: MAT_DATE_LOCALE, useValue: 'fr'},
+
   ],
   bootstrap: [AppComponent]
 })

@@ -3,4 +3,5 @@ export interface Exercice {
 	id?: string;
 	weight: number;
 	nbSeries: number;
+	lastUpdate: number;
 }

@@ -5,3 +5,29 @@
 .mat-fab {
 	margin: 10px;
 }
+
+.mat-divider {
+	margin-top: 16px;
+	margin-bottom: 16px;
+}
+
+h2{
+	margin-top: 10px;
+	margin-bottom: 0;
+	/* display: inline-block;
+	vertical-align: middle; */
+}
+
+.row{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	/* text-align: justify;
+	vertical-align: baseline; */
+}
+
+/* button{
+	float: right;
+	vertical-align: middle;
+	text-align: center;
+} */

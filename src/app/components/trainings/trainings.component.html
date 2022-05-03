@@ -1,8 +1,23 @@
 <div class="container">
 	<form (ngSubmit)="onSubmit()">
 		<mat-form-field>
+			<mat-label>Entrainement</mat-label>
+			<mat-select required [(ngModel)]="trainingSelected" name="trainingSelect">
+				<mat-option *ngFor="let training of trainings" value="{{training.id}}">
+					{{ training.name }}
+				</mat-option>
+			</mat-select>
+			<!-- <input matInput type="text" placeholder="Ex. Squat" 
+			[(ngModel)]="newExercice.name" 
+			name="name"> -->
+		</mat-form-field>
+
+		<mat-form-field>
 			<mat-label>Exercice</mat-label>
-			<input matInput type="text" placeholder="Ex. Squat" [(ngModel)]="newExercice.name" name="name">
+			<input matInput type="text" placeholder="Ex. Squat" 
+			[(ngModel)]="newExercice.name" 
+			name="name"
+			required>
 		</mat-form-field>
 	
 		<mat-form-field>
@@ -10,7 +25,8 @@
 			<input matInput type="number" 
 			placeholder="Ex. 60"
 			[(ngModel)]="newExercice.weight" 
-			name="weight">
+			name="weight"
+			required>
 		</mat-form-field>
 	
 		<mat-form-field>
@@ -19,24 +35,57 @@
 			[(ngModel)]="newExercice.nbSeries" 
 			name="nbSeries">
 		</mat-form-field>
+
+		<mat-form-field>
+			<mat-label>Date</mat-label>
+			<input matInput [matDatepicker]="dp" [value]="datePicked" 
+			(dateInput)="onDateChange('input', $event)"
+			placeholder="J/M/AAAA">
+			<!-- <mat-hint>'DD/MM/YYYY'</mat-hint> -->
+			<mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+			<mat-datepicker #dp></mat-datepicker>
+		  </mat-form-field>
 	
 		<button *ngIf="!inEditMode;else editButtons" mat-fab color="primary" aria-label="Ajouter l'exercice" type="submit">
 			<mat-icon>add</mat-icon>
 		</button>
-
 		<ng-template #editButtons>
-			<button mat-fab color="primary" aria-label="Ajouter l'exercice" (click)="onSave()">
+			<button mat-fab color="primary" aria-label="Modifier l'exercice" (click)="onSave()">
 				<mat-icon>save</mat-icon>
 			</button>
-			<button mat-fab color="" aria-label="Ajouter l'exercice" (click)="onCancel()" type="reset">
-				<mat-icon>close</mat-icon>
-			</button>
 		</ng-template>
+		<button mat-fab color="" aria-label="Vider les champs" (click)="onCancel()" type="button">
+			<mat-icon>close</mat-icon>
+		</button>
 
 	</form>
 	
 
 	<mat-divider></mat-divider>
-	<app-trainings-table (editExerciceEvent)="editExercice($event)">
-	</app-trainings-table>
+		<ng-template ngFor let-training [ngForOf]="trainings">
+			<div class="row">
+				<h2>{{ training.name }}</h2>
+				<button mat-icon-button color="primary" (click)="deleteTraining(training.id)">
+					<mat-icon>delete</mat-icon>
+				</button>
+			</div>
+			<app-trainings-table 
+			(editExerciceEvent)="editExercice($event)" 
+			[data]="training.exercices"
+			[trainingID]="training.id"
+			></app-trainings-table>
+		</ng-template>
+		
+	<mat-divider></mat-divider>
+	<form (ngSubmit)="onTrainingSubmit()">
+		<mat-form-field>
+			<mat-label>Nouvel entrainement</mat-label>
+			<input matInput type="text" placeholder="Ex. Push" 
+			[(ngModel)]="newTraining.name"
+			name="trainingName">
+		</mat-form-field>
+		<button mat-fab color="primary" aria-label="Ajouter l'entrainement" type="submit">
+			<mat-icon>add</mat-icon>
+		</button>
+	</form>
 </div>
