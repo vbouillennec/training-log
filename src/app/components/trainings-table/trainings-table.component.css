@@ -3,6 +3,27 @@
 	width: 100%;
 }
 
+
+
+.inline-cell {
+	white-space: nowrap;
+	padding: 4px;
+}
+
+.mat-header-cell:last-of-type , .mat-cell:last-of-type {
+	padding-right: 0;
+}
+
 .mat-mini-fab {
-	margin-right: 10px;
+	width: 30px;
+	height: 30px;
+	line-height: 18px;
+	font-size: 18px;
+
+	margin-left: 7px;
+}
+
+.mat-icon {
+	font-size: 18px;
+	padding-bottom: 4px;
 }

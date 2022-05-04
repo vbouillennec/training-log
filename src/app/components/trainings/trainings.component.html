@@ -1,4 +1,5 @@
 <div class="container">
+	<div class="row">
 	<form (ngSubmit)="onSubmit()">
 		<mat-form-field>
 			<mat-label>Entrainement</mat-label>
@@ -46,24 +47,28 @@
 			<mat-datepicker #dp></mat-datepicker>
 		  </mat-form-field>
 	
-		<button *ngIf="!inEditMode;else editButtons" mat-fab color="primary" aria-label="Ajouter l'exercice" type="submit">
-			<mat-icon>add</mat-icon>
-		</button>
-		<ng-template #editButtons>
-			<button mat-fab color="primary" aria-label="Modifier l'exercice" (click)="onSave()">
-				<mat-icon>save</mat-icon>
+		<div class="row">
+			<button *ngIf="!inEditMode;else editButtons" mat-fab color="primary" aria-label="Ajouter l'exercice" type="submit">
+				<mat-icon>add</mat-icon>
 			</button>
-		</ng-template>
-		<button mat-fab color="" aria-label="Vider les champs" (click)="onCancel()" type="button">
-			<mat-icon>close</mat-icon>
-		</button>
+			<ng-template #editButtons>
+				<button mat-fab color="primary" aria-label="Modifier l'exercice" (click)="onSave()">
+					<mat-icon>save</mat-icon>
+				</button>
+			</ng-template>
+			<button mat-fab color="" aria-label="Vider les champs" (click)="onCancel()" type="button">
+				<mat-icon>close</mat-icon>
+			</button>
+		</div>
+		
 
 	</form>
+	</div>
 	
 
 	<mat-divider></mat-divider>
 		<ng-template ngFor let-training [ngForOf]="trainings">
-			<div class="row">
+			<div class="row-space-between">
 				<h2>{{ training.name }}</h2>
 				<button mat-icon-button color="primary" (click)="deleteTraining(training.id)">
 					<mat-icon>delete</mat-icon>

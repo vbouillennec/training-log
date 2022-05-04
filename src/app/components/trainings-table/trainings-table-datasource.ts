@@ -5,7 +5,6 @@ import { map } from 'rxjs/operators';
 import { Observable, of as observableOf, merge, BehaviorSubject } from 'rxjs';
 import { ExerciceService } from 'src/app/services/exercice.service';
 import { Exercice } from 'src/app/Exercice';
-import { EXERCICES_DATA } from 'src/app/mock-exercices';
 
 // TODO: Replace this with your own data model type
 export interface TrainingsTableItem {
@@ -16,7 +15,7 @@ export interface TrainingsTableItem {
 }
 
 // TODO: replace this with real data from your application
-const EXAMPLE_DATA: Exercice[] = EXERCICES_DATA;
+// const EXAMPLE_DATA: Exercice[] = EXERCICES_DATA;
 
 /**
  * Data source for the TrainingsTable view. This class should
@@ -24,7 +23,7 @@ const EXAMPLE_DATA: Exercice[] = EXERCICES_DATA;
  * (including sorting, pagination, and filtering).
  */
 export class TrainingsTableDataSource implements DataSource<Exercice> {
-	data: Exercice[] = EXAMPLE_DATA;
+	// data: Exercice[] = EXAMPLE_DATA;
 	paginator: MatPaginator | undefined;
 	sort: MatSort | undefined;
 

@@ -33,7 +33,7 @@
 		<!-- actions Column -->
 		<ng-container matColumnDef="actions">
 			<th mat-header-cell *matHeaderCellDef mat-sort-header>Actions</th>
-			<td mat-cell *matCellDef="let row">
+			<td mat-cell *matCellDef="let row" class="inline-cell">
 				<button mat-mini-fab (click)="onClickEdit(row.id)">
 					<mat-icon>edit</mat-icon>
 				</button>

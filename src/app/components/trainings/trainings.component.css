@@ -2,6 +2,10 @@
 	margin: 5px;
 }
 
+.mat-form-field-wrapper {
+	padding-bottom: 2px;
+}
+
 .mat-fab {
 	margin: 10px;
 }
@@ -14,20 +18,14 @@
 h2{
 	margin-top: 10px;
 	margin-bottom: 0;
-	/* display: inline-block;
-	vertical-align: middle; */
 }
 
 .row{
+	display: inline-block;
+}
+
+.row-space-between{
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	/* text-align: justify;
-	vertical-align: baseline; */
 }
-
-/* button{
-	float: right;
-	vertical-align: middle;
-	text-align: center;
-} */
