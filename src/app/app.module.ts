@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { TrainingsComponent } from './components/trainings/trainings.component';
@@ -27,6 +27,9 @@ import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { environment } from '../environments/environment';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { DeleteDialogComponent } from './components/dialogs/delete-dialog.component';
+import { LoginComponent } from './components/login/login/login.component';
+import { AppRoutingModule } from './app-routing.module';
+import { RegisterComponent } from './components/login/register/register.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +37,8 @@ import { DeleteDialogComponent } from './components/dialogs/delete-dialog.compon
     TrainingsComponent,
     TrainingsTableComponent,
 	DeleteDialogComponent,
+ 	LoginComponent,
+  	RegisterComponent,
   ],
   imports: [
 	MatProgressSpinnerModule,
@@ -44,6 +49,7 @@ import { DeleteDialogComponent } from './components/dialogs/delete-dialog.compon
     BrowserModule,
     BrowserAnimationsModule,
 	FormsModule,
+	ReactiveFormsModule,
 	MatButtonModule,
 	MatTableModule,
 	MatPaginatorModule,
@@ -57,6 +63,7 @@ import { DeleteDialogComponent } from './components/dialogs/delete-dialog.compon
 	MatIconModule,
 	MatDatepickerModule,
 	MatMomentDateModule,
+ AppRoutingModule,
   ],
   providers: [
 	{provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'outline'}},

@@ -1,4 +1,10 @@
 <div class="container">
+	
+	<div class="row-space-between">
+		<h1>Mon entrainement actuel</h1>
+		<button mat-raised-button color="accent" (click)="onLogout()">Se déconnecter</button>
+	</div>
+	<!-- <app-trainings></app-trainings> -->
 	<div class="row">
 	<form (ngSubmit)="onSubmit()">
 		<mat-form-field>
@@ -75,7 +81,8 @@
 				</button>
 			</div>
 			<app-trainings-table 
-			(editExerciceEvent)="editExercice($event)" 
+			(editExerciceEvent)="editExercice($event)"
+			[userID]="userID"
 			[data]="training.exercices"
 			[trainingID]="training.id"
 			></app-trainings-table>

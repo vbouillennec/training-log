@@ -1,0 +1,36 @@
+<div class="col-center">
+	<div class="card">
+		<form (ngSubmit)="onSubmit()" [formGroup]="registerForm">
+			<div class="row">
+				<mat-form-field>
+					<mat-label for="email">email</mat-label>
+					<input matInput
+					id="email"
+					formControlName="email"
+					placeholder="email" 
+					type="email"/>
+				</mat-form-field>
+			</div>
+			<div class="row">
+				<mat-form-field class="row">
+					<mat-label for="password">mot de passe</mat-label>
+					<input matInput
+					id="password"
+					formControlName="password"
+					placeholder="password" 
+					type="password"/>
+				</mat-form-field>
+			</div>
+			<div class="row">
+				<button mat-raised-button 
+				color="primary" 
+				type="submit"
+				[disabled]="!registerForm.valid">Créer un compte</button>
+			</div>
+			<div class="row-start">
+				<button mat-raised-button color="accent" routerLink="/login">Se connecter</button>
+			</div>
+			
+		</form>
+	</div>
+</div>

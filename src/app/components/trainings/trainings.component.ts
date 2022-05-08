@@ -1,9 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, OnInit, ViewChild } from '@angular/core';
 import { Exercice } from 'src/app/Exercice';
 import { ExerciceService } from 'src/app/services/exercice.service';
-import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS } from "@angular/material-moment-adapter";
-import "moment/locale/fr";
-import { FormControl } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { Training } from 'src/app/Training';
 import { TrainingService } from 'src/app/services/training.service';
@@ -14,6 +11,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { DeleteDialogComponent } from '../dialogs/delete-dialog.component';
 import { Moment } from 'moment';
 import * as moment from 'moment';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'app-trainings',
@@ -21,6 +20,7 @@ import * as moment from 'moment';
 	styleUrls: ['./trainings.component.css'],
 })
 export class TrainingsComponent implements OnInit {
+	userID: string | undefined;
 	newExercice: Exercice = {
 		name: '',
 		weight: 0,
@@ -41,16 +41,26 @@ export class TrainingsComponent implements OnInit {
 	public pullExercices: MatTableDataSource<Exercice>;
 	private subs = new Subscription();
 
-	constructor(private exerciceService: ExerciceService, private trainingService: TrainingService, public dialog: MatDialog) {
+	constructor(
+		private exerciceService: ExerciceService, 
+		private trainingService: TrainingService, 
+		public dialog: MatDialog,
+		private auth: AngularFireAuth, 
+		private router: Router
+	) {
 		this.dataSource = new MatTableDataSource<Exercice>();
 		this.pullExercices = new MatTableDataSource<Exercice>();
+		this.auth.authState.subscribe(user => {
+			if(user) {
+				this.userID = user.uid;
+				this.subs.add(this.getAllTrainings());
+			}
+		});
 	}
 
 	ngOnInit(): void {
 		// this.subs.add(this.getAllExerciceFromDB());
 		// this.subs.add(this.getExercicesFromTraining('-N0_mAWRfTUB2ZqUm-b5'));
-		this.subs.add(this.getAllTrainings());
-		
 	}
 
 	ngOnDestroy(): void {
@@ -60,25 +70,27 @@ export class TrainingsComponent implements OnInit {
 	}
 
 	getAllTrainings(): void {
-		this.trainingService.getAllTrainingsRef().snapshotChanges()
-		.subscribe((trainings) => {
-			this.trainings = [];
-			trainings.forEach(training => {
-				let exos: Exercice[] = [];
-				if(training.payload.val()?.exercices) {
-					exos = Object.values(training.payload.val()!.exercices);
-					exos.forEach((exercice, index) => {
-						exercice.id = Object.keys(training.payload.val()!.exercices)[index];
-					});
-				}
-				const train: Training = {
-					id: training.key!,
-					name: training.payload.val()!.name,
-					exercices: exos,
-				};
-				this.trainings.push(train);
+		if (this.userID) {
+			this.trainingService.getAllUserTrainings(this.userID).snapshotChanges()
+			.subscribe((trainings) => {
+				this.trainings = [];
+				trainings.forEach(training => {
+					let exos: Exercice[] = [];
+					if(training.payload.val()?.exercices) {
+						exos = Object.values(training.payload.val()!.exercices);
+						exos.forEach((exercice, index) => {
+							exercice.id = Object.keys(training.payload.val()!.exercices)[index];
+						});
+					}
+					const train: Training = {
+						id: training.key!,
+						name: training.payload.val()!.name,
+						exercices: exos,
+					};
+					this.trainings.push(train);
+				});
 			});
-		});
+		}
 	}
 
 	onCancel() {
@@ -89,8 +101,8 @@ export class TrainingsComponent implements OnInit {
 	onReset() {}
 
 	onSave() {
-		if (this.newExercice.name.length > 0 && this.newExercice.weight > 0 && this.newExercice.nbSeries > 0) {
-			this.exerciceService.updateExerciceFromDB(this.newExercice.id!, this.trainingSelected, {
+		if (this.userID && this.newExercice.name.length > 0 && this.newExercice.weight > 0 && this.newExercice.nbSeries > 0) {
+			this.exerciceService.updateExerciceFromDB(this.userID, this.newExercice.id!, this.trainingSelected, {
 				name: this.newExercice.name,
 				weight: this.newExercice.weight,
 				nbSeries: this.newExercice.nbSeries,
@@ -125,7 +137,8 @@ export class TrainingsComponent implements OnInit {
 	}
 
 	addExercice(trainingKey: string) {
-		this.exerciceService.addNewExerciceToDB(this.newExercice, trainingKey);
+		if(this.userID)
+			this.exerciceService.addNewExerciceToDB(this.userID, this.newExercice, trainingKey);
 	}
 
 	editExercice(event: string){
@@ -147,8 +160,11 @@ export class TrainingsComponent implements OnInit {
 	}
 
 	addTraining() {
-		console.log(this.newTraining);
-		this.trainingService.addNewTrainingToDB(this.newTraining);
+		console.log(this.userID, this.newTraining);
+		if (this.userID) {
+			this.trainingService.addNewTrainingToDB(this.userID, this.newTraining);
+			this.newTraining.name = '';
+		}
 	}
 
 	deleteTraining(trainingKey: string | undefined) {
@@ -158,8 +174,8 @@ export class TrainingsComponent implements OnInit {
 		});
 		dialogRef.afterClosed().subscribe(result => {
 			console.log('dialog closed: ', result);
-			if(result && trainingKey){
-				this.trainingService.removeTrainingFromDB(trainingKey);
+			if(result && trainingKey && this.userID){
+				this.trainingService.removeTrainingFromDB(this.userID, trainingKey);
 			}
 		});
 	}
@@ -173,5 +189,15 @@ export class TrainingsComponent implements OnInit {
 			nbSeries: 0,
 			lastUpdate: Date.now(),
 		}
+	}
+
+	onLogout() {
+		this.auth.signOut()
+		.then(() => {
+			console.log("successfully logged out");
+			this.userID = undefined;
+			this.router.navigate(['login']);
+		})
+		.catch(err => console.error("error loggout => "+err));
 	}
 }

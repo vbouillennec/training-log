@@ -18,6 +18,7 @@ export class TrainingsTableComponent implements OnInit, OnDestroy {
 	dataSource: MatTableDataSource<Exercice>;
 	@Input() data: Exercice[] = [];
 	@Input() trainingID: string | undefined;
+	@Input() userID: string | undefined;
 	exo: any;
 
 	@Output() editExerciceEvent = new EventEmitter<string>();
@@ -36,6 +37,7 @@ export class TrainingsTableComponent implements OnInit, OnDestroy {
 
 	ngOnInit(): void {
 		this.trainingID = this.trainingID;
+		this.userID = this.userID;
 		this.dataSource = new MatTableDataSource<Exercice>(this.data);
 		this.dataSource.sort = this.sort;
 		this.dataSource.paginator = this.paginator;
@@ -61,7 +63,8 @@ export class TrainingsTableComponent implements OnInit, OnDestroy {
 	}
 
 	removeExercice(key: string): void {
-		this.exerciceService.removeExerciceFromDB(key, this.trainingID!);
+		if(this.userID)
+			this.exerciceService.removeExerciceFromDB(this.userID, key, this.trainingID!);
 	}
 
 	public getDate(timestamp: number): string {

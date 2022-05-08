@@ -7,36 +7,35 @@ import { Training } from '../Training';
 	providedIn: 'root'
 })
 export class TrainingService {
-
 	private dbPath = '/trainings';
-	trainingsRef: AngularFireList<Training>;
+	// trainingsRef: AngularFireList<Training>;
 
 	constructor(private db: AngularFireDatabase, public firestore: AngularFirestore) {
-		this.trainingsRef = db.list(this.dbPath);
+		// this.trainingsRef = db.list(this.dbPath);
 	}
 
-	getRealtimeTrainingRef(): AngularFireList<Training> {
-		return this.trainingsRef;
+	// getRealtimeTrainingRef(): AngularFireList<Training> {
+	// 	return this.trainingsRef;
+	// }
+
+	getAllUserTrainings(userID: string): AngularFireList<Training> {
+		return this.db.list(`${this.dbPath}/${userID}`);
 	}
 
-	getAllTrainingsRef(): AngularFireList<Training> {
-		return this.db.list(this.dbPath);
-	}
-
-	addNewTrainingToDB(training: Training): void {
-		this.trainingsRef.push(training).then(_ => console.log("successfully created"))
+	addNewTrainingToDB(userID: string, training: Training): void {
+		this.db.list(`${this.dbPath}/${userID}`).push(training).then(_ => console.log("successfully created"))
 		.catch(err => "error creating => "+err);
 	}
 
-	removeTrainingFromDB(key: string): void {
-		this.trainingsRef.remove(key)
+	removeTrainingFromDB(userID: string, key: string): void {
+		this.db.list(`${this.dbPath}/${userID}`).remove(key)
 		.then(_ => console.log("successfully removed"))
 		.catch(err => "error removing => "+err);
 	}
 
-	updateTrainingFromDB(key: string, newValues: object): void {
-		this.trainingsRef.update(key, newValues)
-		.then(_ => console.log("successfully updated"))
-		.catch(err => "error updating => "+err);
-	}
+	// updateTrainingFromDB(key: string, newValues: object): void {
+	// 	this.trainingsRef.update(key, newValues)
+	// 	.then(_ => console.log("successfully updated"))
+	// 	.catch(err => "error updating => "+err);
+	// }
 }

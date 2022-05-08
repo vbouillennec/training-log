@@ -1,0 +1,41 @@
+
+.col-center {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 80vh;
+}
+
+.mat-form-field, .mat-raised-button {
+	width: 100%;
+}
+
+.card {
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 50vh;
+	width: 30vw;
+}
+
+.input {
+	flex: 1;
+}
+
+.row {
+	width: 100%;
+}
+
+/* .card form {
+	text-align: center;
+} */
+
+.row-start {
+	margin-top: 20px;
+	text-align: start;
+}
+
+a {
+	margin-top: 20px!important;
+	color: white;
+}

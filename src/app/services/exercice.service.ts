@@ -10,35 +10,36 @@ import { Observable, of } from "rxjs";
 	providedIn: 'root'
 })
 export class ExerciceService {
-	private dbPath = '/exercices';
-	exercicesRef: AngularFireList<Exercice>;
+	private trainingsPath = '/trainings';
+	private exercicesPath = '/exercices';
+	// exercicesRef: AngularFireList<Exercice>;
 
 	constructor(private db: AngularFireDatabase, public firestore: AngularFirestore) {
-		this.exercicesRef = db.list(this.dbPath);
+		// this.exercicesRef = db.list(this.dbPath);
 	}
 
-	getRealtimeExerciceRef(): AngularFireList<Exercice> {
-		return this.exercicesRef;
+	// getRealtimeExerciceRef(): AngularFireList<Exercice> {
+	// 	return this.exercicesRef;
+	// }
+
+	getExercicesFromTraining(userID: string, trainingKey: string): Observable<SnapshotAction<any>[]> {
+		return this.db.list(`${this.trainingsPath}/${userID}/${trainingKey}${this.exercicesPath}`).snapshotChanges();
 	}
 
-	getExercicesFromTraining(trainingKey: string): Observable<SnapshotAction<any>[]> {
-		return this.db.list('trainings/'+trainingKey+'/exercices').snapshotChanges();
-	}
-
-	addNewExerciceToDB(exercice: Exercice, trainingKey: string): void {
-		this.db.list('trainings/'+trainingKey+'/exercices').push(exercice)
+	addNewExerciceToDB(userID: string, exercice: Exercice, trainingKey: string): void {
+		this.db.list(`${this.trainingsPath}/${userID}/${trainingKey}${this.exercicesPath}`).push(exercice)
 		.then(_ => console.log("successfully created"))
 		.catch(err => "error creating => "+err);
 	}
 
-	removeExerciceFromDB(exerciceKey: string, trainingKey: string): void {
-		this.db.list('trainings/'+trainingKey+'/exercices').remove(exerciceKey)
+	removeExerciceFromDB(userID: string, exerciceKey: string, trainingKey: string): void {
+		this.db.list(`${this.trainingsPath}/${userID}/${trainingKey}${this.exercicesPath}`).remove(exerciceKey)
 		.then(_ => console.log("successfully removed"))
 		.catch(err => "error removing => "+err);
 	}
 
-	updateExerciceFromDB(exerciceKey: string, trainingKey: string, newValues: Exercice): void {
-		this.db.list('trainings/'+trainingKey+'/exercices').update(exerciceKey, newValues)
+	updateExerciceFromDB(userID: string, exerciceKey: string, trainingKey: string, newValues: Exercice): void {
+		this.db.list(`${this.trainingsPath}/${userID}/${trainingKey}${this.exercicesPath}`).update(exerciceKey, newValues)
 		.then(_ => console.log("successfully updated"))
 		.catch(err => console.error("error updating => "+err));
 	}
